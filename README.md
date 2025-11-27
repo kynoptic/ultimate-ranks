@@ -52,6 +52,7 @@ git clone https://github.com/kynoptic/ultimate-ranks-app.git app
 ### Setup each component
 
 **Data Pipeline:**
+
 ```bash
 cd data
 make init         # Setup Python environment
@@ -59,6 +60,7 @@ ur health         # Verify installation
 ```
 
 **Web Frontend:**
+
 ```bash
 cd web
 make init         # Install dependencies (pnpm)
@@ -66,6 +68,7 @@ make dev          # Start dev server on :4321
 ```
 
 **iOS App:**
+
 ```bash
 cd app
 open ultimate-ranks.xcodeproj  # Open in Xcode
