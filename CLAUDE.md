@@ -9,15 +9,19 @@ Ultimate Ranks is a monorepo containing three interconnected components with a c
 **`data/`** → **`web/`** → **`app/`**
 
 - **`data/`** - Pure Python data pipeline that aggregates 100+ publications using Condorcet voting to generate canonical rankings (feeds both web and app)
-- **`web/`** - SEO-optimized static website that presents rankings as read-only content, targets long-tail queries (e.g., "best RPGs of the 2010s for PlayStation"), and funnels users to the mobile app
+- **`web/`** - SEO-optimized static website that presents rankings as read-only content, targets long-tail queries (e.g., "best RPGs of the 2010s for PlayStation"), and captures email signups for app launch notifications
 - **`app/`** - iOS SwiftUI mobile app where users track their personal backlog progress through the ranked list (core value proposition)
 
 ### User journey
 
+**Phase 1 (0.1 - Web launch):**
 1. **Discovery**: User finds site via search (e.g., "best RPGs of all time")
 2. **Browse**: User explores rankings on SEO-optimized website
-3. **Convert**: Website directs user to download iOS app
-4. **Engage**: User tracks backlog, marks completed games, measures progress against critical consensus
+3. **Convert**: User joins email list for app launch notifications
+
+**Phase 2 (Post-0.1 - App launch):**
+4. **Notify**: Email subscribers notified of app availability
+5. **Engage**: User downloads app, tracks backlog, marks completed games, measures progress against critical consensus
 
 Each component has its own dedicated CLAUDE.md file with specific guidance. **Always read the component-specific CLAUDE.md when working within that directory.**
 
@@ -25,11 +29,13 @@ Each component has its own dedicated CLAUDE.md file with specific guidance. **Al
 
 **Milestone: Ultimate Ranks 0.1** (Due: December 1, 2025)
 
-**Goal**: First coordinated release where all three repos work together as a unified product. Users can discover top-ranked games on web, download the app, and track their backlog.
+**Goal**: Web frontend launch with email signup funnel. Users can discover and browse top-ranked games, then join email list to be notified of future app launch and updates.
+
+**Scope**: Data pipeline + Web frontend only (app release comes in later phase)
 
 **Status**: Nearly complete - 2/4 open issues remaining (data QID bugs)
 
-### Per-component status:
+### Per-component status
 
 - **Data pipeline** (v6.2.0, Beta): 2 open issues (#529, #530 - QID mapping bugs)
   - ✅ Security CVE resolved
@@ -39,14 +45,15 @@ Each component has its own dedicated CLAUDE.md file with specific guidance. **Al
 
 - **Web frontend** (Phase 2): ✅ All milestone goals met (0 open issues)
   - ✅ Working search implemented
-  - ✅ App Store funnel with prominent CTAs
-  - Phase 1 complete: Static text-only rankings (2,211 games)
+  - ✅ Email signup funnel with prominent CTAs
+  - ✅ Static text-only rankings (2,211 games)
   - Next (post-0.1): Long-tail SEO pages, image integration
 
-- **iOS app** (Pre-release): ✅ All milestone goals met (0 open issues)
+- **iOS app** (Not in 0.1 milestone): Development complete, release planned for later phase
   - ✅ Backlog tracking feature complete (#7 via PR #9)
   - ✅ Status filtering, SwiftData persistence, responsive design
-  - Next (post-0.1): Image display (#8), progress stats
+  - 📅 **Release timing**: Post-0.1 (subscribers will be notified via email list)
+  - Future: Image display (#8), progress stats
 
 ## Repository structure
 
@@ -69,6 +76,7 @@ ultimate-ranks/ → kynoptic/ultimate-ranks (umbrella repo)
 ```
 
 **Four repositories total:**
+
 1. [kynoptic/ultimate-ranks](https://github.com/kynoptic/ultimate-ranks) - Umbrella repo (cross-component docs)
 2. [kynoptic/ultimate-ranks-data](https://github.com/kynoptic/ultimate-ranks-data) - Data pipeline
 3. [kynoptic/ultimate-ranks-web](https://github.com/kynoptic/ultimate-ranks-web) - Web frontend
@@ -77,11 +85,13 @@ ultimate-ranks/ → kynoptic/ultimate-ranks (umbrella repo)
 ### Cross-repo coordination
 
 **GitHub Organization Project**: [Ultimate Ranks](https://github.com/orgs/kynoptic/projects/1)
+
 - Single project board tracking issues across all three repos
 - Coordinated milestones (e.g., "Ultimate Ranks 0.1")
 - Cross-component feature tracking
 
 **Working with multiple repos:**
+
 ```bash
 # Each repo has its own git workflow
 cd data && git status  # Check data repo
@@ -133,16 +143,19 @@ Discovery/SEO          Engagement/Retention
 **Web frontend** (`web/`) → Consumes `web.json` at build time for SEO-optimized static pages
 **iOS app** (`app/`) → Seeds SwiftData from bundled `game-rankings.json` (curated subset)
 
-### Web-to-app funnel strategy
+### Web-to-app funnel strategy (phased approach)
 
-The website's primary role is **acquisition**, not retention:
-
+**Phase 1 (0.1)**: Website as discovery and lead capture
 - **Long-tail SEO**: Target queries like "best PS5 RPGs", "greatest 90s platformers", "top indie games 2020s"
 - **Content structure**: Dynamic pages for platform/genre/era combinations
-- **Call-to-action**: Prominent app download links, emphasizing backlog tracking features
-- **Read-only experience**: No user accounts or interactivity on web (drives app downloads)
+- **Call-to-action**: Email signup to be notified of app launch and updates
+- **Read-only experience**: No user accounts or interactivity on web (drives email signups)
+- **Value proposition**: "Track your gaming backlog - join the waitlist"
 
-The app's role is **retention and engagement** through personal progress tracking.
+**Phase 2 (Post-0.1)**: App launch and engagement
+- Email list notified of app availability
+- CTA updates from "Join waitlist" to "Download app"
+- App's role is **retention and engagement** through personal progress tracking
 
 ### Common tasks
 
@@ -171,12 +184,14 @@ When working toward a cross-component milestone:
 2. **Tag cross-repo issues** and add to organization project
 3. **Independent development** - each repo progresses at its own pace
 4. **Status check** before release:
+
    ```bash
    # Check milestone progress across all repos
    gh issue list -R kynoptic/ultimate-ranks-app --milestone "Ultimate Ranks 0.1"
    gh issue list -R kynoptic/ultimate-ranks-web --milestone "Ultimate Ranks 0.1"
    gh issue list -R kynoptic/ultimate-ranks-data --milestone "Ultimate Ranks 0.1"
    ```
+
 5. **Release each component** when milestone complete (can be different days)
 6. **Document cross-repo dependencies** in CLAUDE.md and issue descriptions
 
@@ -227,10 +242,10 @@ xcodebuild -project ultimate-ranks.xcodeproj -scheme ultimate-ranks \
 ## Critical cross-component rules
 
 1. **Respect the user journey architecture**
-   - **Web is for discovery** (SEO, browsing, learning) → Read-only, no user accounts
+   - **Web is for discovery and lead capture** (SEO, browsing, email signups) → Read-only, no user accounts
    - **App is for engagement** (tracking, progress, personal data) → Interactive, persistent state
    - Never add user accounts or tracking features to web (breaks funnel strategy)
-   - Web features should drive app downloads, not replace app functionality
+   - Web features should drive email signups (Phase 1) and future app downloads (Phase 2), not replace app functionality
 
 2. **Never modify data formats without updating all consumers**
    - Changes to `data/` output schemas require updates to `web/` and `app/`
@@ -290,32 +305,39 @@ A major cross-component effort is underway to centralize game cover art handling
   - Add `imageURL` field to `Game` model
   - Implement `AsyncImage` in `GameRowView`
 
-**Status tracking** (App Issue #7 - ✅ Closed, Milestone: Ultimate Ranks 0.1):
+**Status tracking** (App Issue #7 - ✅ Closed):
+
 - **Core value proposition**: What makes app worth downloading vs browsing website
 - ✅ **Completed** (PR #9): Status enum, filter chips, SwiftData persistence, responsive design
 - All acceptance criteria met, issue closed Nov 27, 2025
+- **Release timing**: App release comes post-0.1, subscribers notified via email
 
-**App download funnel** (Web Issue #33):
-- Add prominent CTAs on website to drive app downloads
-- Emphasize backlog tracking as key differentiator
-- Ensure seamless handoff from web browsing to app engagement
+**Email signup funnel** (Web Issue #33 - Milestone: Ultimate Ranks 0.1):
+
+- Add prominent email signup CTA on website
+- Emphasize future backlog tracking as key value proposition
+- Capture leads for app launch notification
+- **Phase 2**: CTA updates to app download link once launched
 
 **When working on image-related features**, check these cross-repo issues for coordination.
 
 ### Critical cross-component issues to be aware of
 
 **Data quality and QID mapping** (Data repo):
+
 - Issue #530: Pokémon Legends vote name truncated
 - Issue #529: Deltarune Chapter Two mapping not resolved
 - Issue #480: Remake votes create temporal vote pollution
 - Issue #472: Year-scoped ballots excluded from all-time elections
 
 **Testing and quality gates** (All repos):
+
 - Data #230: Test coverage below quality gate (current: ~60%, target: 66.6%)
 - Web #15: Integration tests needed for Astro components
 - All components enforce: No vanity tests, behavioral assertions required
 
 **Pipeline concerns** (Data repo):
+
 - Issue #481: Wilson confidence interval affects cult classics ranking
 - Issue #479: Schulze ties broken by Borda (consensus vs polarizing games)
 - Issue #360: Mid-year lists receive same weight as year-end lists
