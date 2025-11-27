@@ -53,7 +53,8 @@ Each component has its own dedicated CLAUDE.md file with specific guidance. **Al
 **Important**: This is a **multi-repo setup**, not a traditional monorepo. Each component is a separate git repository:
 
 ```
-ultimate-ranks/ (local directory only, NOT a git repo)
+ultimate-ranks/ → kynoptic/ultimate-ranks (umbrella repo)
+├── .git/           # Tracks cross-component files only
 ├── data/           # git@github.com:kynoptic/ultimate-ranks-data.git
 │   ├── .git/       # Separate repository
 │   └── CLAUDE.md   # Python/data pipeline specific guidance
@@ -63,8 +64,15 @@ ultimate-ranks/ (local directory only, NOT a git repo)
 ├── app/            # git@github.com:kynoptic/ultimate-ranks-app.git
 │   ├── .git/       # Separate repository
 │   └── CLAUDE.md   # iOS development specific guidance
-└── CLAUDE.md       # This file (cross-component coordination)
+├── CLAUDE.md       # This file (tracked in umbrella repo)
+└── README.md       # Project overview (tracked in umbrella repo)
 ```
+
+**Four repositories total:**
+1. [kynoptic/ultimate-ranks](https://github.com/kynoptic/ultimate-ranks) - Umbrella repo (cross-component docs)
+2. [kynoptic/ultimate-ranks-data](https://github.com/kynoptic/ultimate-ranks-data) - Data pipeline
+3. [kynoptic/ultimate-ranks-web](https://github.com/kynoptic/ultimate-ranks-web) - Web frontend
+4. [kynoptic/ultimate-ranks-app](https://github.com/kynoptic/ultimate-ranks-app) - iOS app
 
 ### Cross-repo coordination
 
