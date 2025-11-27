@@ -1,0 +1,9 @@
+# Ignore the three component repos
+app/
+web/
+data/
+
+# But track cross-component files
+!CLAUDE.md
+!README.md
+!.gitignore
