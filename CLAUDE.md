@@ -43,11 +43,14 @@ Each component has its own dedicated CLAUDE.md file with specific guidance. **Al
   - ⏳ Remaining: Deltarune Chapter Two mapping, Pokémon Legends truncation
   - Recent: Wilson Score confidence weighting, IOD normalization, Publisher consensus thresholds
 
-- **Web frontend** (Phase 2): ✅ All milestone goals met (0 open issues)
-  - ✅ Working search implemented
-  - ✅ Email signup funnel with prominent CTAs
-  - ✅ Static text-only rankings (2,211 games)
-  - Next (post-0.1): Long-tail SEO pages, image integration
+- **Web frontend**: Scope reduction in progress - reverting to text-only for 0.1
+  - 🔄 **Current state**: Phase 2 visual grid with images (needs stashing)
+  - 📋 **0.1 scope**: Text-only rankings (simple `<ol>` list, ~10 KB transfer)
+  - ⏳ **Remaining work**:
+    - Stash visual grid, search UI, and all images (~1.2 GB)
+    - Implement email signup CTA (#33 - Buttondown integration)
+    - Revert to semantic HTML baseline
+  - **Post-0.1**: Image integration (#35), search/filter UI, long-tail SEO pages
 
 - **iOS app** (Not in 0.1 milestone): Development complete, release planned for later phase
   - ✅ Backlog tracking feature complete (#7 via PR #9)
@@ -314,10 +317,19 @@ A major cross-component effort is underway to centralize game cover art handling
 
 **Email signup funnel** (Web Issue #33 - Milestone: Ultimate Ranks 0.1):
 
-- Add prominent email signup CTA on website
+- Add prominent email signup CTA on website (Buttondown consensus)
 - Emphasize future backlog tracking as key value proposition
 - Capture leads for app launch notification
 - **Phase 2**: CTA updates to app download link once launched
+
+**Text-only scope reduction** (Decision: Nov 27, 2025):
+
+- **Rationale**: Align web and app aesthetics for coordinated 0.1 launch
+- **Current state**: Phase 2 visual grid with 3,700+ images (~1.2 GB) already implemented
+- **Action required**: Stash visual work, revert to semantic `<ol>` list
+- **Components to remove**: GameCard, TokenizedSearch, FallbackImage, image metadata
+- **Benefits**: Faster ship date, removes image CDN dependency, ~10 KB transfer (vs ~100 KB)
+- **Deferred to post-0.1**: Image integration (#35), search UI, visual polish
 
 **When working on image-related features**, check these cross-repo issues for coordination.
 
