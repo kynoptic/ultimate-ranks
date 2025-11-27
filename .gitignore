@@ -7,3 +7,6 @@ data/
 !CLAUDE.md
 !README.md
 !.gitignore
+
+# IDE/tool-specific directories
+.serena/
