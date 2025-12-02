@@ -25,38 +25,36 @@ Ultimate Ranks is a monorepo containing three interconnected components with a c
 
 Each component has its own dedicated CLAUDE.md file with specific guidance. **Always read the component-specific CLAUDE.md when working within that directory.**
 
-## Current status (November 2025)
+## Current status (December 2025)
 
-**Milestone: Ultimate Ranks 0.1** (Due: December 1, 2025)
+**Milestone: Ultimate Ranks 0.1** - Complete ✅
 
 **Goal**: Web frontend launch with email signup funnel. Users can discover and browse top-ranked games, then join email list to be notified of future app launch and updates.
 
 **Scope**: Data pipeline + Web frontend only (app release comes in later phase)
 
-**Status**: Nearly complete - 2/4 open issues remaining (data QID bugs)
+**Status**: All blocking issues resolved. Ready for production deployment.
 
 ### Per-component status
 
-- **Data pipeline** (v6.2.0, Beta): 2 open issues (#529, #530 - QID mapping bugs)
+- **Data pipeline** (v6.2.0, Beta): 0.1 scope complete, 30 open issues (backlog)
+  - ✅ QID mapping bugs resolved (#529 Deltarune, #530 Pokémon Legends)
   - ✅ Security CVE resolved
-  - ✅ Core bug fixes complete
-  - ⏳ Remaining: Deltarune Chapter Two mapping, Pokémon Legends truncation
-  - Recent: Wilson Score confidence weighting, IOD normalization, Publisher consensus thresholds
+  - ✅ Core algorithm: Wilson Score confidence, IOD normalization, Publisher consensus
+  - 🔬 **New investigations**: Late entrant scoring (#573), scope-filtered implicit wins (#567)
+  - 📋 **Backlog**: Image infrastructure (#543-546), tech debt, validation improvements
 
-- **Web frontend**: Scope reduction in progress - reverting to text-only for 0.1
-  - 🔄 **Current state**: Phase 2 visual grid with images (needs stashing)
-  - 📋 **0.1 scope**: Text-only rankings (simple `<ol>` list, ~10 KB transfer)
-  - ⏳ **Remaining work**:
-    - Stash visual grid, search UI, and all images (~1.2 GB)
-    - Implement email signup CTA (#33 - Buttondown integration)
-    - Revert to semantic HTML baseline
-  - **Post-0.1**: Image integration (#35), search/filter UI, long-tail SEO pages
+- **Web frontend**: 0.1 scope complete, 4 open issues (backlog)
+  - ✅ Email signup CTA implemented (#33 - Buttondown integration)
+  - ✅ Text-only rankings baseline (semantic `<ol>` list, ~10 KB transfer)
+  - 📋 **Post-0.1**: Image integration (#35), site analytics (#53), methodology depth (#50)
 
-- **iOS app** (Not in 0.1 milestone): Development complete, release planned for later phase
+- **iOS app** (Not in 0.1 milestone): Development complete, 11 open issues (backlog)
   - ✅ Backlog tracking feature complete (#7 via PR #9)
   - ✅ Status filtering, SwiftData persistence, responsive design
   - 📅 **Release timing**: Post-0.1 (subscribers will be notified via email list)
-  - Future: Image display (#8), progress stats
+  - 🐛 **Known bug**: Platform filter missing platforms (#23)
+  - 📋 **Backlog**: Image display (#8), analytics (#28), data sync (#31)
 
 ## Repository structure
 
@@ -290,9 +288,9 @@ Only when integrating across components do you need to ensure data format compat
 
 ### Active cross-component initiatives
 
-**Image infrastructure (Milestone: Ultimate Ranks 0.1)**
+**Image infrastructure** (Post-0.1 priority)
 
-A major cross-component effort is underway to centralize game cover art handling:
+A major cross-component effort to centralize game cover art handling:
 
 - **Data repo** (Issues #543-#546): Building complete image pipeline
   - Fetch from SteamGridDB/IGDB APIs
@@ -308,51 +306,44 @@ A major cross-component effort is underway to centralize game cover art handling
   - Add `imageURL` field to `Game` model
   - Implement `AsyncImage` in `GameRowView`
 
-**Status tracking** (App Issue #7 - ✅ Closed):
+**Status tracking** (App Issue #7 - ✅ Complete):
 
-- **Core value proposition**: What makes app worth downloading vs browsing website
 - ✅ **Completed** (PR #9): Status enum, filter chips, SwiftData persistence, responsive design
 - All acceptance criteria met, issue closed Nov 27, 2025
 - **Release timing**: App release comes post-0.1, subscribers notified via email
 
-**Email signup funnel** (Web Issue #33 - Milestone: Ultimate Ranks 0.1):
+**Email signup funnel** (Web Issue #33 - ✅ Complete):
 
-- Add prominent email signup CTA on website (Buttondown consensus)
-- Emphasize future backlog tracking as key value proposition
-- Capture leads for app launch notification
+- ✅ Prominent email signup CTA implemented (Buttondown integration)
+- ✅ Value proposition: "Track your gaming backlog - join the waitlist"
 - **Phase 2**: CTA updates to app download link once launched
 
-**Text-only scope reduction** (Decision: Nov 27, 2025):
+**Text-only 0.1 baseline** (✅ Complete):
 
-- **Rationale**: Align web and app aesthetics for coordinated 0.1 launch
-- **Current state**: Phase 2 visual grid with 3,700+ images (~1.2 GB) already implemented
-- **Action required**: Stash visual work, revert to semantic `<ol>` list
-- **Components to remove**: GameCard, TokenizedSearch, FallbackImage, image metadata
-- **Benefits**: Faster ship date, removes image CDN dependency, ~10 KB transfer (vs ~100 KB)
+- ✅ Semantic `<ol>` rankings list (~10 KB transfer)
+- ✅ Visual grid and images stashed for post-0.1
 - **Deferred to post-0.1**: Image integration (#35), search UI, visual polish
 
-**When working on image-related features**, check these cross-repo issues for coordination.
+**When working on image-related features**, check the cross-repo issues for coordination.
 
 ### Critical cross-component issues to be aware of
 
-**Data quality and QID mapping** (Data repo):
+**Algorithm quality** (Data repo - active investigations):
 
-- Issue #530: Pokémon Legends vote name truncated
-- Issue #529: Deltarune Chapter Two mapping not resolved
+- Issue #573: Late entrants overplaced due to clean-slate omission advantage (NEW)
+- Issue #567: Implicit wins not scope-filtered for decade/year ballots (NEW)
+- Issue #481: Wilson confidence interval affects cult classics ranking
 - Issue #480: Remake votes create temporal vote pollution
-- Issue #472: Year-scoped ballots excluded from all-time elections
+- Issue #360: Mid-year lists receive same weight as year-end lists
+
+**App bugs** (App repo):
+
+- Issue #23: Platform filter missing many platforms from game data
 
 **Testing and quality gates** (All repos):
 
-- Data #230: Test coverage below quality gate (current: ~60%, target: 66.6%)
-- Web #15: Integration tests needed for Astro components
 - All components enforce: No vanity tests, behavioral assertions required
-
-**Pipeline concerns** (Data repo):
-
-- Issue #481: Wilson confidence interval affects cult classics ranking
-- Issue #479: Schulze ties broken by Borda (consensus vs polarizing games)
-- Issue #360: Mid-year lists receive same weight as year-end lists
+- Pre-commit hooks and CI validation in place
 
 **When encountering QID resolution issues**, check `data/config/data/qid/` for mapping tiers and editorial decisions.
 
